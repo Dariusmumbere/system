@@ -190,6 +190,11 @@
             background-color: var(--warning-color);
         }
 
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.875rem;
+        }
+
         .card-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -686,6 +691,34 @@
         </div>
     </div>
 
+    <!-- Member Details Modal -->
+    <div class="modal" id="memberDetailsModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2><i class="fas fa-user"></i> Member Details</h2>
+            <div id="memberDetailsContent">
+                <!-- Will be populated by JavaScript -->
+            </div>
+            <div class="form-group" style="margin-top: 20px;">
+                <button class="btn" id="closeMemberDetailsBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loan Details Modal -->
+    <div class="modal" id="loanDetailsModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2><i class="fas fa-hand-holding-usd"></i> Loan Details</h2>
+            <div id="loanDetailsContent">
+                <!-- Will be populated by JavaScript -->
+            </div>
+            <div class="form-group" style="margin-top: 20px;">
+                <button class="btn" id="closeLoanDetailsBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Initialize data in localStorage if not exists
         if (!localStorage.getItem('rureMembers')) {
@@ -842,6 +875,13 @@
         const loansGrowthEl = document.getElementById('loansGrowth');
         const repaymentsGrowthEl = document.getElementById('repaymentsGrowth');
         const alertContainer = document.getElementById('alertContainer');
+        const memberDetailsModal = document.getElementById('memberDetailsModal');
+        const memberDetailsContent = document.getElementById('memberDetailsContent');
+        const closeMemberDetailsBtn = document.getElementById('closeMemberDetailsBtn');
+        const loanDetailsModal = document.getElementById('loanDetailsModal');
+        const loanDetailsContent = document.getElementById('loanDetailsContent');
+        const closeLoanDetailsBtn = document.getElementById('closeLoanDetailsBtn');
+        const viewAllMembersBtn = document.getElementById('viewAllMembersBtn');
 
         // Toggle mobile menu
         mobileMenuBtn.addEventListener('click', () => {
@@ -856,6 +896,12 @@
             if (e.target === addLoanModal) {
                 addLoanModal.style.display = 'none';
             }
+            if (e.target === memberDetailsModal) {
+                memberDetailsModal.style.display = 'none';
+            }
+            if (e.target === loanDetailsModal) {
+                loanDetailsModal.style.display = 'none';
+            }
         });
 
         // Close modals with close button
@@ -863,7 +909,19 @@
             btn.addEventListener('click', () => {
                 addMemberModal.style.display = 'none';
                 addLoanModal.style.display = 'none';
+                memberDetailsModal.style.display = 'none';
+                loanDetailsModal.style.display = 'none';
             });
+        });
+
+        // Close member details modal
+        closeMemberDetailsBtn.addEventListener('click', () => {
+            memberDetailsModal.style.display = 'none';
+        });
+
+        // Close loan details modal
+        closeLoanDetailsBtn.addEventListener('click', () => {
+            loanDetailsModal.style.display = 'none';
         });
 
         // Show add member modal
@@ -893,6 +951,9 @@
             dueDate.setMonth(dueDate.getMonth() + 3);
             document.getElementById('loanDueDate').value = dueDate.toISOString().split('T')[0];
             
+            // Set default interest rate
+            document.getElementById('loanInterestRate').value = 10;
+            
             addLoanModal.style.display = 'flex';
         });
 
@@ -921,7 +982,7 @@
             localStorage.setItem('rureMembers', JSON.stringify(members));
             localStorage.setItem('rureNextMemberId', (nextId + 1).toString());
             
-            // Create a savings transaction
+            // Create a registration transaction
             const transactions = JSON.parse(localStorage.getItem('rureTransactions'));
             const nextTransactionId = parseInt(localStorage.getItem('rureNextTransactionId'));
             
@@ -1031,6 +1092,294 @@
             return new Date(dateString).toLocaleDateString('en-US', options);
         }
 
+        // View member details
+        window.viewMember = function(memberId) {
+            const members = JSON.parse(localStorage.getItem('rureMembers'));
+            const member = members.find(m => m.id === memberId);
+            
+            if (!member) {
+                showAlert('Member not found!', 'danger');
+                return;
+            }
+            
+            const loans = JSON.parse(localStorage.getItem('rureLoans'));
+            const memberLoans = loans.filter(loan => loan.memberId === memberId);
+            
+            const transactions = JSON.parse(localStorage.getItem('rureTransactions'));
+            const memberTransactions = transactions.filter(t => t.memberId === memberId);
+            
+            memberDetailsContent.innerHTML = `
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Member ID</label>
+                        <p>${member.id}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <p><span class="badge badge-success">Active</span></p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <p>${member.firstName} ${member.lastName}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Join Date</label>
+                        <p>${formatDate(member.joinDate)}</p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <p>${member.phone}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <p>${member.email || 'N/A'}</p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>ID Number</label>
+                        <p>${member.idNumber}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Total Savings</label>
+                        <p>${formatCurrency(member.savings)}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <p>${member.address || 'N/A'}</p>
+                </div>
+                
+                <h3 style="margin-top: 20px; margin-bottom: 15px;"><i class="fas fa-hand-holding-usd"></i> Loans (${memberLoans.length})</h3>
+                ${memberLoans.length > 0 ? `
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Loan ID</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Progress</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${memberLoans.map(loan => {
+                                    const progress = (loan.amountPaid / loan.amount * 100).toFixed(0);
+                                    return `
+                                        <tr>
+                                            <td>${loan.id}</td>
+                                            <td>${formatCurrency(loan.amount)}</td>
+                                            <td>${formatDate(loan.date)}</td>
+                                            <td><span class="badge ${progress >= 100 ? 'badge-success' : progress >= 50 ? 'badge-warning' : 'badge-danger'}">
+                                                ${progress}% repaid
+                                            </span></td>
+                                            <td>
+                                                <div style="width: 100%; background-color: #eee; border-radius: 4px;">
+                                                    <div style="width: ${progress}%; height: 8px; background-color: ${progress >= 100 ? '#27ae60' : progress >= 50 ? '#f39c12' : '#e74c3c'}; border-radius: 4px;"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                ` : '<p>No loans found for this member.</p>'}
+                
+                <h3 style="margin-top: 20px; margin-bottom: 15px;"><i class="fas fa-exchange-alt"></i> Recent Transactions (${memberTransactions.length})</h3>
+                ${memberTransactions.length > 0 ? `
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${memberTransactions.slice(0, 5).map(transaction => `
+                                    <tr>
+                                        <td>${formatDate(transaction.date)}</td>
+                                        <td>${transaction.type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</td>
+                                        <td>${formatCurrency(transaction.amount)}</td>
+                                        <td>${transaction.notes}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                ` : '<p>No transactions found for this member.</p>'}
+            `;
+            
+            memberDetailsModal.style.display = 'flex';
+        };
+
+        // View loan details
+        window.viewLoan = function(loanId) {
+            const loans = JSON.parse(localStorage.getItem('rureLoans'));
+            const loan = loans.find(l => l.id === loanId);
+            
+            if (!loan) {
+                showAlert('Loan not found!', 'danger');
+                return;
+            }
+            
+            const members = JSON.parse(localStorage.getItem('rureMembers'));
+            const member = members.find(m => m.id === loan.memberId);
+            const memberName = member ? `${member.firstName} ${member.lastName}` : 'Unknown';
+            
+            const transactions = JSON.parse(localStorage.getItem('rureTransactions'));
+            const loanTransactions = transactions.filter(t => 
+                (t.type === 'loan_repayment' || t.type === 'loan_issued') && 
+                (t.type === 'loan_issued' ? t.amount === loan.amount && t.date === loan.date : t.memberId === loan.memberId)
+            );
+            
+            const progress = (loan.amountPaid / loan.amount * 100).toFixed(0);
+            const remainingAmount = loan.amount - loan.amountPaid;
+            
+            loanDetailsContent.innerHTML = `
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Loan ID</label>
+                        <p>${loan.id}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <p><span class="badge ${progress >= 100 ? 'badge-success' : progress >= 50 ? 'badge-warning' : 'badge-danger'}">
+                            ${progress}% repaid
+                        </span></p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Member</label>
+                        <p>${memberName}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Purpose</label>
+                        <p>${loan.purpose}</p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Loan Amount</label>
+                        <p>${formatCurrency(loan.amount)}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Interest Rate</label>
+                        <p>${loan.interestRate}%</p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Amount Paid</label>
+                        <p>${formatCurrency(loan.amountPaid)}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount Remaining</label>
+                        <p>${formatCurrency(remainingAmount)}</p>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Loan Date</label>
+                        <p>${formatDate(loan.date)}</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Due Date</label>
+                        <p>${formatDate(loan.dueDate)}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Progress</label>
+                    <div style="width: 100%; background-color: #eee; border-radius: 4px; margin-bottom: 5px;">
+                        <div style="width: ${progress}%; height: 8px; background-color: ${progress >= 100 ? '#27ae60' : progress >= 50 ? '#f39c12' : '#e74c3c'}; border-radius: 4px;"></div>
+                    </div>
+                    <small>${progress}% repaid (${formatCurrency(loan.amountPaid)} of ${formatCurrency(loan.amount)})</small>
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <p>${loan.notes || 'N/A'}</p>
+                </div>
+                
+                <h3 style="margin-top: 20px; margin-bottom: 15px;"><i class="fas fa-exchange-alt"></i> Loan Transactions</h3>
+                ${loanTransactions.length > 0 ? `
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${loanTransactions.map(transaction => `
+                                    <tr>
+                                        <td>${formatDate(transaction.date)}</td>
+                                        <td>${transaction.type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</td>
+                                        <td>${formatCurrency(transaction.amount)}</td>
+                                        <td>${transaction.notes}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                ` : '<p>No transactions found for this loan.</p>'}
+            `;
+            
+            loanDetailsModal.style.display = 'flex';
+        };
+
+        // View all members
+        viewAllMembersBtn.addEventListener('click', () => {
+            const members = JSON.parse(localStorage.getItem('rureMembers'));
+            
+            memberDetailsContent.innerHTML = `
+                <h3 style="margin-bottom: 20px;"><i class="fas fa-users"></i> All Members (${members.length})</h3>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Join Date</th>
+                                <th>Savings</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${members.map(member => `
+                                <tr>
+                                    <td>${member.id}</td>
+                                    <td>${member.firstName} ${member.lastName}</td>
+                                    <td>${member.phone}</td>
+                                    <td>${formatDate(member.joinDate)}</td>
+                                    <td>${formatCurrency(member.savings)}</td>
+                                    <td><span class="badge badge-success">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm" onclick="viewMember(${member.id})">View</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            memberDetailsModal.style.display = 'flex';
+        });
+
         // Load dashboard data
         function loadDashboardData() {
             const members = JSON.parse(localStorage.getItem('rureMembers'));
@@ -1049,8 +1398,9 @@
             const totalLoanBalance = totalLoanAmount - totalLoanPaid;
             
             // This month calculations (simplified)
-            const currentMonth = new Date().getMonth();
-            const currentYear = new Date().getFullYear();
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth();
+            const currentYear = currentDate.getFullYear();
             
             const membersThisMonth = members.filter(m => {
                 const joinDate = new Date(m.joinDate);
@@ -1131,16 +1481,6 @@
                 `;
             });
         }
-
-        // View member details (placeholder)
-        window.viewMember = function(memberId) {
-            showAlert(`Viewing member with ID: ${memberId}`, 'success');
-        };
-
-        // View loan details (placeholder)
-        window.viewLoan = function(loanId) {
-            showAlert(`Viewing loan with ID: ${loanId}`, 'success');
-        };
 
         // Initialize the dashboard
         document.addEventListener('DOMContentLoaded', () => {
