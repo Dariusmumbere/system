@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rwenzori United Real Estates - Sacco Management</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        nav a:hover, nav a.active {
+            background-color: var(--secondary-color);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .main {
+            padding: 30px 0;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
+
+        .sidebar {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            height: fit-content;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: var(--dark-color);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: var(--light-color);
+            color: var(--secondary-color);
+        }
+
+        .sidebar-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .page-header h2 {
+            color: var(--primary-color);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--border-radius);
+            background-color: var(--secondary-color);
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--accent-color);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .card .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background-color: #d5f5e3;
+            color: var(--success-color);
+        }
+
+        .badge-warning {
+            background-color: #fef5e7;
+            color: var(--warning-color);
+        }
+
+        .badge-danger {
+            background-color: #fadbd8;
+            color: var(--accent-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #aaa;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            color: var(--accent-color);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .alert-success {
+            background-color: #d5f5e3;
+            color: var(--success-color);
+        }
+
+        .alert-danger {
+            background-color: #fadbd8;
+            color: var(--accent-color);
+        }
+
+        .close-alert {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: inherit;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .search-filter input {
+            flex: 1;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .page-item {
+            list-style: none;
+        }
+
+        .page-link {
+            display: block;
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            color: var(--secondary-color);
+            transition: var(--transition);
+        }
+
+        .page-link:hover {
+            background-color: var(--light-color);
+        }
+
+        .page-item.active .page-link {
+            background-color: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        @media (max-width: 992px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .sidebar.mobile-visible {
+                display: block;
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 250px;
+                height: calc(100vh - 80px);
+                z-index: 99;
+                overflow-y: auto;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-filter {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-home"></i>
+                <h1>Rwenzori United Real Estates</h1>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="dashboard">
+                <div class="sidebar" id="sidebar">
+                    <ul class="sidebar-menu">
+                        <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                        <li><a href="#members"><i class="fas fa-users"></i> Members</a></li>
+                        <li><a href="#savings"><i class="fas fa-piggy-bank"></i> Savings</a></li>
+                        <li><a href="#loans"><i class="fas fa-hand-holding-usd"></i> Loans</a></li>
+                        <li><a href="#transactions"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                        <li><a href="#reports"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                        <li><a href="#meetings"><i class="fas fa-calendar-alt"></i> Meetings</a></li>
+                        <li><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
+                    </ul>
+                </div>
+
+                <div class="content">
+                    <div class="page-header">
+                        <h2><i class="fas fa-tachometer-alt"></i> Dashboard</h2>
+                        <div>
+                            <button class="btn" id="addMemberBtn"><i class="fas fa-user-plus"></i> Add Member</button>
+                        </div>
+                    </div>
+
+                    <div id="alertContainer"></div>
+
+                    <div class="card-grid">
+                        <div class="card">
+                            <h3>Total Members</h3>
+                            <p class="value" id="totalMembers">0</p>
+                            <p><i class="fas fa-chart-line"></i> <span id="memberGrowth">0</span> this month</p>
+                        </div>
+                        <div class="card">
+                            <h3>Total Savings</h3>
+                            <p class="value" id="totalSavings">UGX 0</p>
+                            <p><i class="fas fa-chart-line"></i> <span id="savingsGrowth">UGX 0</span> this month</p>
+                        </div>
+                        <div class="card">
+                            <h3>Active Loans</h3>
+                            <p class="value" id="activeLoans">0</p>
+                            <p><i class="fas fa-chart-line"></i> <span id="loansGrowth">UGX 0</span> issued this month</p>
+                        </div>
+                        <div class="card">
+                            <h3>Loan Balance</h3>
+                            <p class="value" id="loanBalance">UGX 0</p>
+                            <p><i class="fas fa-chart-line"></i> <span id="repaymentsGrowth">UGX 0</span> repaid this month</p>
+                        </div>
+                    </div>
+
+                    <div class="page-header">
+                        <h2><i class="fas fa-users"></i> Recent Members</h2>
+                        <div>
+                            <button class="btn" id="viewAllMembersBtn">View All</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="recentMembersTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Join Date</th>
+                                    <th>Savings</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="page-header">
+                        <h2><i class="fas fa-hand-holding-usd"></i> Recent Loans</h2>
+                        <div>
+                            <button class="btn" id="addLoanBtn"><i class="fas fa-plus"></i> New Loan</button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table id="recentLoansTable">
+                            <thead>
+                                <tr>
+                                    <th>Loan ID</th>
+                                    <th>Member</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Due Date</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Member Modal -->
+    <div class="modal" id="addMemberModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2><i class="fas fa-user-plus"></i> Add New Member</h2>
+            <form id="addMemberForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="memberFirstName">First Name</label>
+                        <input type="text" id="memberFirstName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="memberLastName">Last Name</label>
+                        <input type="text" id="memberLastName" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="memberPhone">Phone Number</label>
+                        <input type="tel" id="memberPhone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="memberEmail">Email</label>
+                        <input type="email" id="memberEmail" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="memberIdNumber">ID Number</label>
+                        <input type="text" id="memberIdNumber" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="memberJoinDate">Join Date</label>
+                        <input type="date" id="memberJoinDate" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="memberAddress">Address</label>
+                    <textarea id="memberAddress" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Save Member</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Loan Modal -->
+    <div class="modal" id="addLoanModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2><i class="fas fa-hand-holding-usd"></i> New Loan Application</h2>
+            <form id="addLoanForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="loanMember">Member</label>
+                        <select id="loanMember" class="form-control" required>
+                            <option value="">Select Member</option>
+                            <!-- Will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="loanAmount">Amount (UGX)</label>
+                        <input type="number" id="loanAmount" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="loanDate">Loan Date</label>
+                        <input type="date" id="loanDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loanDueDate">Due Date</label>
+                        <input type="date" id="loanDueDate" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="loanInterestRate">Interest Rate (%)</label>
+                        <input type="number" id="loanInterestRate" class="form-control" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loanPurpose">Purpose</label>
+                        <select id="loanPurpose" class="form-control" required>
+                            <option value="Business">Business</option>
+                            <option value="Education">Education</option>
+                            <option value="Emergency">Emergency</option>
+                            <option value="Home Improvement">Home Improvement</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="loanNotes">Notes</label>
+                    <textarea id="loanNotes" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Process Loan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize data in localStorage if not exists
+        if (!localStorage.getItem('rureMembers')) {
+            const initialMembers = [
+                {
+                    id: 1,
+                    firstName: "John",
+                    lastName: "Doe",
+                    phone: "256712345678",
+                    email: "john.doe@example.com",
+                    idNumber: "CM12345678",
+                    joinDate: "2023-01-15",
+                    address: "123 Main St, Kampala",
+                    status: "active",
+                    savings: 1500000,
+                    lastSavingsDate: "2023-06-10"
+                },
+                {
+                    id: 2,
+                    firstName: "Jane",
+                    lastName: "Smith",
+                    phone: "256772345678",
+                    email: "jane.smith@example.com",
+                    idNumber: "CM23456789",
+                    joinDate: "2023-02-20",
+                    address: "456 Oak Ave, Entebbe",
+                    status: "active",
+                    savings: 2500000,
+                    lastSavingsDate: "2023-06-15"
+                },
+                {
+                    id: 3,
+                    firstName: "Robert",
+                    lastName: "Johnson",
+                    phone: "256732345678",
+                    email: "robert.j@example.com",
+                    idNumber: "CM34567890",
+                    joinDate: "2023-03-05",
+                    address: "789 Pine Rd, Jinja",
+                    status: "active",
+                    savings: 750000,
+                    lastSavingsDate: "2023-06-05"
+                }
+            ];
+            localStorage.setItem('rureMembers', JSON.stringify(initialMembers));
+        }
+
+        if (!localStorage.getItem('rureLoans')) {
+            const initialLoans = [
+                {
+                    id: 1,
+                    memberId: 1,
+                    amount: 500000,
+                    date: "2023-05-10",
+                    dueDate: "2023-08-10",
+                    interestRate: 10,
+                    purpose: "Business",
+                    status: "active",
+                    amountPaid: 200000,
+                    notes: "For retail business expansion"
+                },
+                {
+                    id: 2,
+                    memberId: 2,
+                    amount: 1000000,
+                    date: "2023-05-15",
+                    dueDate: "2023-08-15",
+                    interestRate: 10,
+                    purpose: "Education",
+                    status: "active",
+                    amountPaid: 300000,
+                    notes: "For university fees"
+                }
+            ];
+            localStorage.setItem('rureLoans', JSON.stringify(initialLoans));
+        }
+
+        if (!localStorage.getItem('rureTransactions')) {
+            const initialTransactions = [
+                {
+                    id: 1,
+                    type: "savings",
+                    memberId: 1,
+                    amount: 500000,
+                    date: "2023-06-10",
+                    notes: "Monthly savings deposit"
+                },
+                {
+                    id: 2,
+                    type: "savings",
+                    memberId: 2,
+                    amount: 1000000,
+                    date: "2023-06-15",
+                    notes: "Monthly savings deposit"
+                },
+                {
+                    id: 3,
+                    type: "savings",
+                    memberId: 3,
+                    amount: 250000,
+                    date: "2023-06-05",
+                    notes: "Monthly savings deposit"
+                },
+                {
+                    id: 4,
+                    type: "loan_repayment",
+                    memberId: 1,
+                    amount: 200000,
+                    date: "2023-06-12",
+                    notes: "Loan repayment"
+                },
+                {
+                    id: 5,
+                    type: "loan_repayment",
+                    memberId: 2,
+                    amount: 300000,
+                    date: "2023-06-18",
+                    notes: "Loan repayment"
+                }
+            ];
+            localStorage.setItem('rureTransactions', JSON.stringify(initialTransactions));
+        }
+
+        if (!localStorage.getItem('rureNextMemberId')) {
+            localStorage.setItem('rureNextMemberId', '4');
+        }
+
+        if (!localStorage.getItem('rureNextLoanId')) {
+            localStorage.setItem('rureNextLoanId', '3');
+        }
+
+        if (!localStorage.getItem('rureNextTransactionId')) {
+            localStorage.setItem('rureNextTransactionId', '6');
+        }
+
+        // DOM Elements
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const addMemberBtn = document.getElementById('addMemberBtn');
+        const addMemberModal = document.getElementById('addMemberModal');
+        const addMemberForm = document.getElementById('addMemberForm');
+        const addLoanBtn = document.getElementById('addLoanBtn');
+        const addLoanModal = document.getElementById('addLoanModal');
+        const addLoanForm = document.getElementById('addLoanForm');
+        const loanMemberSelect = document.getElementById('loanMember');
+        const recentMembersTable = document.getElementById('recentMembersTable').getElementsByTagName('tbody')[0];
+        const recentLoansTable = document.getElementById('recentLoansTable').getElementsByTagName('tbody')[0];
+        const totalMembersEl = document.getElementById('totalMembers');
+        const totalSavingsEl = document.getElementById('totalSavings');
+        const activeLoansEl = document.getElementById('activeLoans');
+        const loanBalanceEl = document.getElementById('loanBalance');
+        const memberGrowthEl = document.getElementById('memberGrowth');
+        const savingsGrowthEl = document.getElementById('savingsGrowth');
+        const loansGrowthEl = document.getElementById('loansGrowth');
+        const repaymentsGrowthEl = document.getElementById('repaymentsGrowth');
+        const alertContainer = document.getElementById('alertContainer');
+
+        // Toggle mobile menu
+        mobileMenuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('mobile-visible');
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === addMemberModal) {
+                addMemberModal.style.display = 'none';
+            }
+            if (e.target === addLoanModal) {
+                addLoanModal.style.display = 'none';
+            }
+        });
+
+        // Close modals with close button
+        document.querySelectorAll('.close-modal').forEach(btn => {
+            btn.addEventListener('click', () => {
+                addMemberModal.style.display = 'none';
+                addLoanModal.style.display = 'none';
+            });
+        });
+
+        // Show add member modal
+        addMemberBtn.addEventListener('click', () => {
+            addMemberModal.style.display = 'flex';
+        });
+
+        // Show add loan modal
+        addLoanBtn.addEventListener('click', () => {
+            // Populate member dropdown
+            loanMemberSelect.innerHTML = '<option value="">Select Member</option>';
+            const members = JSON.parse(localStorage.getItem('rureMembers'));
+            members.forEach(member => {
+                if (member.status === 'active') {
+                    const option = document.createElement('option');
+                    option.value = member.id;
+                    option.textContent = `${member.firstName} ${member.lastName}`;
+                    loanMemberSelect.appendChild(option);
+                }
+            });
+            
+            // Set default dates
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('loanDate').value = today;
+            
+            const dueDate = new Date();
+            dueDate.setMonth(dueDate.getMonth() + 3);
+            document.getElementById('loanDueDate').value = dueDate.toISOString().split('T')[0];
+            
+            addLoanModal.style.display = 'flex';
+        });
+
+        // Handle add member form submission
+        addMemberForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const members = JSON.parse(localStorage.getItem('rureMembers'));
+            const nextId = parseInt(localStorage.getItem('rureNextMemberId'));
+            
+            const newMember = {
+                id: nextId,
+                firstName: document.getElementById('memberFirstName').value,
+                lastName: document.getElementById('memberLastName').value,
+                phone: document.getElementById('memberPhone').value,
+                email: document.getElementById('memberEmail').value,
+                idNumber: document.getElementById('memberIdNumber').value,
+                joinDate: document.getElementById('memberJoinDate').value,
+                address: document.getElementById('memberAddress').value,
+                status: "active",
+                savings: 0,
+                lastSavingsDate: null
+            };
+            
+            members.push(newMember);
+            localStorage.setItem('rureMembers', JSON.stringify(members));
+            localStorage.setItem('rureNextMemberId', (nextId + 1).toString());
+            
+            // Create a savings transaction
+            const transactions = JSON.parse(localStorage.getItem('rureTransactions'));
+            const nextTransactionId = parseInt(localStorage.getItem('rureNextTransactionId'));
+            
+            const newTransaction = {
+                id: nextTransactionId,
+                type: "registration",
+                memberId: nextId,
+                amount: 0,
+                date: new Date().toISOString().split('T')[0],
+                notes: "New member registration"
+            };
+            
+            transactions.push(newTransaction);
+            localStorage.setItem('rureTransactions', JSON.stringify(transactions));
+            localStorage.setItem('rureNextTransactionId', (nextTransactionId + 1).toString());
+            
+            showAlert('Member added successfully!', 'success');
+            addMemberForm.reset();
+            addMemberModal.style.display = 'none';
+            loadDashboardData();
+        });
+
+        // Handle add loan form submission
+        addLoanForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const loans = JSON.parse(localStorage.getItem('rureLoans'));
+            const nextLoanId = parseInt(localStorage.getItem('rureNextLoanId'));
+            const memberId = parseInt(document.getElementById('loanMember').value);
+            
+            const newLoan = {
+                id: nextLoanId,
+                memberId: memberId,
+                amount: parseFloat(document.getElementById('loanAmount').value),
+                date: document.getElementById('loanDate').value,
+                dueDate: document.getElementById('loanDueDate').value,
+                interestRate: parseFloat(document.getElementById('loanInterestRate').value),
+                purpose: document.getElementById('loanPurpose').value,
+                status: "active",
+                amountPaid: 0,
+                notes: document.getElementById('loanNotes').value
+            };
+            
+            loans.push(newLoan);
+            localStorage.setItem('rureLoans', JSON.stringify(loans));
+            localStorage.setItem('rureNextLoanId', (nextLoanId + 1).toString());
+            
+            // Create a loan transaction
+            const transactions = JSON.parse(localStorage.getItem('rureTransactions'));
+            const nextTransactionId = parseInt(localStorage.getItem('rureNextTransactionId'));
+            
+            const newTransaction = {
+                id: nextTransactionId,
+                type: "loan_issued",
+                memberId: memberId,
+                amount: newLoan.amount,
+                date: newLoan.date,
+                notes: `Loan issued for ${newLoan.purpose}`
+            };
+            
+            transactions.push(newTransaction);
+            localStorage.setItem('rureTransactions', JSON.stringify(transactions));
+            localStorage.setItem('rureNextTransactionId', (nextTransactionId + 1).toString());
+            
+            showAlert('Loan processed successfully!', 'success');
+            addLoanForm.reset();
+            addLoanModal.style.display = 'none';
+            loadDashboardData();
+        });
+
+        // Show alert message
+        function showAlert(message, type) {
+            const alertEl = document.createElement('div');
+            alertEl.className = `alert alert-${type}`;
+            alertEl.innerHTML = `
+                <span>${message}</span>
+                <button class="close-alert">&times;</button>
+            `;
+            
+            alertContainer.appendChild(alertEl);
+            
+            // Close alert
+            alertEl.querySelector('.close-alert').addEventListener('click', () => {
+                alertEl.remove();
+            });
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (alertEl.parentNode) {
+                    alertEl.remove();
+                }
+            }, 5000);
+        }
+
+        // Format currency
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('en-UG', { 
+                style: 'currency', 
+                currency: 'UGX',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+
+        // Load dashboard data
+        function loadDashboardData() {
+            const members = JSON.parse(localStorage.getItem('rureMembers'));
+            const loans = JSON.parse(localStorage.getItem('rureLoans'));
+            const transactions = JSON.parse(localStorage.getItem('rureTransactions'));
+            
+            // Calculate stats
+            const totalMembers = members.length;
+            const activeMembers = members.filter(m => m.status === 'active').length;
+            
+            const totalSavings = members.reduce((sum, member) => sum + member.savings, 0);
+            
+            const activeLoans = loans.filter(loan => loan.status === 'active').length;
+            const totalLoanAmount = loans.reduce((sum, loan) => sum + loan.amount, 0);
+            const totalLoanPaid = loans.reduce((sum, loan) => sum + loan.amountPaid, 0);
+            const totalLoanBalance = totalLoanAmount - totalLoanPaid;
+            
+            // This month calculations (simplified)
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+            
+            const membersThisMonth = members.filter(m => {
+                const joinDate = new Date(m.joinDate);
+                return joinDate.getMonth() === currentMonth && joinDate.getFullYear() === currentYear;
+            }).length;
+            
+            const savingsThisMonth = transactions
+                .filter(t => t.type === 'savings' && new Date(t.date).getMonth() === currentMonth && new Date(t.date).getFullYear() === currentYear)
+                .reduce((sum, t) => sum + t.amount, 0);
+            
+            const loansThisMonth = transactions
+                .filter(t => t.type === 'loan_issued' && new Date(t.date).getMonth() === currentMonth && new Date(t.date).getFullYear() === currentYear)
+                .reduce((sum, t) => sum + t.amount, 0);
+            
+            const repaymentsThisMonth = transactions
+                .filter(t => t.type === 'loan_repayment' && new Date(t.date).getMonth() === currentMonth && new Date(t.date).getFullYear() === currentYear)
+                .reduce((sum, t) => sum + t.amount, 0);
+            
+            // Update dashboard cards
+            totalMembersEl.textContent = activeMembers;
+            totalSavingsEl.textContent = formatCurrency(totalSavings);
+            activeLoansEl.textContent = activeLoans;
+            loanBalanceEl.textContent = formatCurrency(totalLoanBalance);
+            
+            memberGrowthEl.textContent = `${membersThisMonth} new`;
+            savingsGrowthEl.textContent = formatCurrency(savingsThisMonth);
+            loansGrowthEl.textContent = formatCurrency(loansThisMonth);
+            repaymentsGrowthEl.textContent = formatCurrency(repaymentsThisMonth);
+            
+            // Populate recent members table
+            recentMembersTable.innerHTML = '';
+            const recentMembers = members
+                .filter(m => m.status === 'active')
+                .sort((a, b) => new Date(b.joinDate) - new Date(a.joinDate))
+                .slice(0, 5);
+            
+            recentMembers.forEach(member => {
+                const row = recentMembersTable.insertRow();
+                row.innerHTML = `
+                    <td>${member.id}</td>
+                    <td>${member.firstName} ${member.lastName}</td>
+                    <td>${member.phone}</td>
+                    <td>${formatDate(member.joinDate)}</td>
+                    <td>${formatCurrency(member.savings)}</td>
+                    <td><span class="badge badge-success">Active</span></td>
+                    <td>
+                        <button class="btn btn-sm" onclick="viewMember(${member.id})">View</button>
+                    </td>
+                `;
+            });
+            
+            // Populate recent loans table
+            recentLoansTable.innerHTML = '';
+            const recentLoans = loans
+                .filter(loan => loan.status === 'active')
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 5);
+            
+            recentLoans.forEach(loan => {
+                const member = members.find(m => m.id === loan.memberId);
+                const memberName = member ? `${member.firstName} ${member.lastName}` : 'Unknown';
+                const progress = (loan.amountPaid / loan.amount * 100).toFixed(0);
+                
+                recentLoansTable.insertRow().innerHTML = `
+                    <td>${loan.id}</td>
+                    <td>${memberName}</td>
+                    <td>${formatCurrency(loan.amount)}</td>
+                    <td>${formatDate(loan.date)}</td>
+                    <td>${formatDate(loan.dueDate)}</td>
+                    <td>
+                        <span class="badge ${progress >= 100 ? 'badge-success' : progress >= 50 ? 'badge-warning' : 'badge-danger'}">
+                            ${progress}% repaid
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm" onclick="viewLoan(${loan.id})">View</button>
+                    </td>
+                `;
+            });
+        }
+
+        // View member details (placeholder)
+        window.viewMember = function(memberId) {
+            showAlert(`Viewing member with ID: ${memberId}`, 'success');
+        };
+
+        // View loan details (placeholder)
+        window.viewLoan = function(loanId) {
+            showAlert(`Viewing loan with ID: ${loanId}`, 'success');
+        };
+
+        // Initialize the dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboardData();
+            
+            // Set default join date to today
+            document.getElementById('memberJoinDate').value = new Date().toISOString().split('T')[0];
+        });
+    </script>
+</body>
+</html>
