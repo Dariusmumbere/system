@@ -997,12 +997,12 @@ function formatDate(dateString) {
 }
 
 function formatCurrency(amount) {
-    return new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD'
+    return 'ugx ' + new Intl.NumberFormat('en-US', {
+        style: 'decimal',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
     }).format(amount || 0);
 }
-
 function generateId() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
