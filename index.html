@@ -474,10 +474,10 @@
             </button>
             <nav>
                 <ul>
-                    <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                    <li><a href="#"><i class="fas fa-user"></i> Profile</a></li>
-                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
-                    <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    <li><a href="#" class="active" id="navDashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="#" id="navProfile"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a href="#" id="navSettings"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li><a href="#" id="navLogout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                 </ul>
             </nav>
         </div>
@@ -488,14 +488,14 @@
             <div class="dashboard">
                 <div class="sidebar" id="sidebar">
                     <ul class="sidebar-menu">
-                        <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                        <li><a href="#members"><i class="fas fa-users"></i> Members</a></li>
-                        <li><a href="#savings"><i class="fas fa-piggy-bank"></i> Savings</a></li>
-                        <li><a href="#loans"><i class="fas fa-hand-holding-usd"></i> Loans</a></li>
-                        <li><a href="#transactions"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
-                        <li><a href="#reports"><i class="fas fa-chart-bar"></i> Reports</a></li>
-                        <li><a href="#meetings"><i class="fas fa-calendar-alt"></i> Meetings</a></li>
-                        <li><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
+                        <li><a href="#" class="active" id="sideDashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                        <li><a href="#" id="sideMembers"><i class="fas fa-users"></i> Members</a></li>
+                        <li><a href="#" id="sideSavings"><i class="fas fa-piggy-bank"></i> Savings</a></li>
+                        <li><a href="#" id="sideLoans"><i class="fas fa-hand-holding-usd"></i> Loans</a></li>
+                        <li><a href="#" id="sideTransactions"><i class="fas fa-exchange-alt"></i> Transactions</a></li>
+                        <li><a href="#" id="sideReports"><i class="fas fa-chart-bar"></i> Reports</a></li>
+                        <li><a href="#" id="sideMeetings"><i class="fas fa-calendar-alt"></i> Meetings</a></li>
+                        <li><a href="#" id="sideSettings"><i class="fas fa-cog"></i> Settings</a></li>
                     </ul>
                 </div>
 
@@ -882,6 +882,122 @@
         const loanDetailsContent = document.getElementById('loanDetailsContent');
         const closeLoanDetailsBtn = document.getElementById('closeLoanDetailsBtn');
         const viewAllMembersBtn = document.getElementById('viewAllMembersBtn');
+
+        // Navigation elements
+        const navDashboard = document.getElementById('navDashboard');
+        const navProfile = document.getElementById('navProfile');
+        const navSettings = document.getElementById('navSettings');
+        const navLogout = document.getElementById('navLogout');
+        const sideDashboard = document.getElementById('sideDashboard');
+        const sideMembers = document.getElementById('sideMembers');
+        const sideSavings = document.getElementById('sideSavings');
+        const sideLoans = document.getElementById('sideLoans');
+        const sideTransactions = document.getElementById('sideTransactions');
+        const sideReports = document.getElementById('sideReports');
+        const sideMeetings = document.getElementById('sideMeetings');
+        const sideSettings = document.getElementById('sideSettings');
+
+        // Set active nav item
+        function setActiveNavItem(item) {
+            // Reset all nav items
+            document.querySelectorAll('nav a').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.sidebar-menu a').forEach(el => el.classList.remove('active'));
+            
+            // Set active state for clicked item
+            if (item === 'dashboard') {
+                navDashboard.classList.add('active');
+                sideDashboard.classList.add('active');
+            } else if (item === 'members') {
+                sideMembers.classList.add('active');
+            } else if (item === 'savings') {
+                sideSavings.classList.add('active');
+            } else if (item === 'loans') {
+                sideLoans.classList.add('active');
+            } else if (item === 'transactions') {
+                sideTransactions.classList.add('active');
+            } else if (item === 'reports') {
+                sideReports.classList.add('active');
+            } else if (item === 'meetings') {
+                sideMeetings.classList.add('active');
+            } else if (item === 'settings') {
+                navSettings.classList.add('active');
+                sideSettings.classList.add('active');
+            } else if (item === 'profile') {
+                navProfile.classList.add('active');
+            }
+        }
+
+        // Navigation event listeners
+        navDashboard.addEventListener('click', (e) => {
+            e.preventDefault();
+            setActiveNavItem('dashboard');
+            loadDashboardData();
+        });
+
+        navProfile.addEventListener('click', (e) => {
+            e.preventDefault();
+            setActiveNavItem('profile');
+            // Load profile content here
+        });
+
+        navSettings.addEventListener('click', (e) => {
+            e.preventDefault();
+            setActiveNavItem('settings');
+            // Load settings content here
+        });
+
+        navLogout.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Handle logout logic here
+        });
+
+        sideDashboard.addEventListener('click', (e) => {
+            e.preventDefault();
+            setActiveNavItem('dashboard');
+            loadDashboardData();
+        });
+
+        sideMembers.addEventListener('click', (e) => {
+            e.preventDefault();
+            setActiveNavItem('members');
+            // Load members content here
+        });
+
+        sideSavings.addEventListener('click', (e) => {
+            e.preventDefault();
+            setActiveNavItem('savings');
+            // Load savings content here
+        });
+
+        sideLoans.addEventListener('click', (e) => {
+            e.preventDefault();
+            setActiveNavItem('loans');
+            // Load loans content here
+        });
+
+        sideTransactions.addEventListener('click', (e) => {
+            e.preventDefault();
+            setActiveNavItem('transactions');
+            // Load transactions content here
+        });
+
+        sideReports.addEventListener('click', (e) => {
+            e.preventDefault();
+            setActiveNavItem('reports');
+            // Load reports content here
+        });
+
+        sideMeetings.addEventListener('click', (e) => {
+            e.preventDefault();
+            setActiveNavItem('meetings');
+            // Load meetings content here
+        });
+
+        sideSettings.addEventListener('click', (e) => {
+            e.preventDefault();
+            setActiveNavItem('settings');
+            // Load settings content here
+        });
 
         // Toggle mobile menu
         mobileMenuBtn.addEventListener('click', () => {
@@ -1484,6 +1600,7 @@
 
         // Initialize the dashboard
         document.addEventListener('DOMContentLoaded', () => {
+            setActiveNavItem('dashboard');
             loadDashboardData();
             
             // Set default join date to today
